@@ -13,7 +13,17 @@
 #' @noRd
 #' @return Leaflet map object with all stop lat/long values plotted for a route.
 
-map_gtfs_routes <- function(gtfs_obj, route_ids, service_ids = NULL, shape_ids = NULL, include_stops = TRUE, only_stops = FALSE, stop_opacity = 0.5, stop_details = FALSE, route_opacity = .75, route_colors = NULL) {
+map_gtfs_routes <- function(gtfs_obj, 
+                            route_ids, 
+                            service_ids = NULL, 
+                            shape_ids = NULL, 
+                            include_stops = TRUE, 
+                            only_stops = FALSE, 
+                            stop_opacity = 0.5, 
+                            stop_details = FALSE, 
+                            route_opacity = .75, 
+                            route_colors = NULL,
+                            providertiles = "CartoDB.Positron") {
 
   # GET PLOTTING DATA --------------------------------
   plotting_data <- get_routes_sldf(gtfs_obj, route_ids, service_ids, shape_ids, route_opacity, route_colors)
@@ -43,7 +53,7 @@ map_gtfs_routes <- function(gtfs_obj, route_ids, service_ids = NULL, shape_ids =
   # create map with shapes
   m <- plotting_data$gtfs_lines %>%
   	leaflet::leaflet(width = '100%') %>%
-  	leaflet::addProviderTiles("OpenStreetMap.BlackAndWhite") %>%
+  	leaflet::addProviderTiles(providertiles) %>%
 		leaflet::addLegend(
 			colors = plotting_data$routes_colors_df$color,
 			labels = paste("Route", plotting_data$routes_colors_df$route_short_name),
